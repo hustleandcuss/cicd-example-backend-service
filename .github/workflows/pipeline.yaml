@@ -79,6 +79,7 @@ jobs:
     environment: production
     needs:
       - build
+      - get-version
     steps:
     - name: Deploy image to AWS App Runner
       env:
