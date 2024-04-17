@@ -8,7 +8,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    environment: test
+    environment: production
     steps:
     - name: Git checkout
       uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       version: ${{ steps.get-version.outputs.version }}
-    environment: test
+    environment: production
     needs: test
     steps:
     - name: Git checkout
@@ -51,7 +51,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    environment: test
+    environment: production
     needs:
       - test
       - get-version
@@ -76,22 +76,30 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: test
+    environment: production
     needs:
       - build
     steps:
-      - name: Deploy image to AWS App Runner
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
-        run: |
-          echo "Implement Deploy!"
-#          response="$(aws apprunner update-service --service-arn <value> --source-configuration <value>)"
-#
-#          if [[ $? -eq 0 ]]; then
-#            echo "Successfully deployed service"
-#          else
-#            echo "Error: $response"
-#            exit 1
-#          fi
+    - name: Deploy image to AWS App Runner
+      env:
+        VERSION: ${{ needs.get-version.outputs.version }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: ${{ vars.AWS_REGION }}
+        CONTAINER_REGISTRY: ${{ vars.CONTAINER_REGISTRY }}
+        APP_RUNNER_SERVICE_ARN: ${{ vars.AWS_APP_RUNNER_SERVICE_ARN }}
+        IMAGE_NAME: cicd-example-frontend-service
+      run: |
+        echo "Starting deploy"
+
+        response="$(aws apprunner update-service \
+          --region eu-west-1 \
+          --service-arn $APP_RUNNER_SERVICE_ARN \
+          --source-configuration '{"ImageRepository":{"ImageIdentifier":"'${CONTAINER_REGISTRY}'/'${IMAGE_NAME}':'${VERSION}'","ImageRepositoryType":"ECR"}}')"
+
+        if [[ $? -eq 0 ]]; then
+          echo "Successfully deployed service"
+        else
+          echo "Error: $response"
+          exit 1
+        fi

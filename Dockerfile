@@ -19,11 +19,11 @@ FROM node:20-alpine AS production
 
 RUN apk add dumb-init python3
 
-EXPOSE 3000
-
 WORKDIR /server
 
 COPY --chown=node:node --from=build ./src ./
+
+EXPOSE 3000
 
 USER node
 
