@@ -5,6 +5,24 @@ on:
   pull_request:
     branches: [ "main" ]
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v4
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4.0.2
+      with:
+        node-version: '20.x'
+    - name: npm install
+      id: test
+      run: |
+        npm install
+    - name: npm run lint
+      run: |
+        npm run test
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -16,12 +34,13 @@ jobs:
       uses: actions/setup-node@v4.0.2
       with:
         node-version: '20.x'
-    - name: npm install, lint and test
+    - name: npm install
       id: test
       run: |
         npm install
-        # npm run lint
-        # npm run test
+    - name: npm run lint
+      run: |
+        npm run test
   get-version:
     name: Get Project Version
     runs-on: ubuntu-latest
