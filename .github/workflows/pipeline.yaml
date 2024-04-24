@@ -17,12 +17,12 @@ jobs:
       with:
         node-version: '20.x'
     - name: npm install
-      id: test
       run: |
         npm install
     - name: npm run lint
+      id: lint
       run: |
-        npm run test
+        npm run lint
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -35,10 +35,10 @@ jobs:
       with:
         node-version: '20.x'
     - name: npm install
-      id: test
       run: |
         npm install
-    - name: npm run lint
+    - name: npm run test
+      id: test
       run: |
         npm run test
   get-version:
@@ -47,7 +47,6 @@ jobs:
     outputs:
       version: ${{ steps.get-version.outputs.version }}
     environment: production
-    needs: test
     steps:
     - name: Git checkout
       uses: actions/checkout@v4
@@ -72,6 +71,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs:
+      - lint
       - test
       - get-version
     steps:
