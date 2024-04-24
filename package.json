@@ -4,9 +4,12 @@
   "description": "Example backend service to demonstrate CI/CD flows.",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "dotenvx run -f .env.local -- node src/index.js",
-    "prod": "dotenvx run -f .env.production -- node src/index.js"
+    "prod": "dotenvx run -f .env.production -- node src/index.js",
+    "test": "jest --testTimeout=10000 --detectOpenHandles --forceExit",
+    "test_watch": "jest --testTimeout=10000 --detectOpenHandles --forceExit --watchAll",
+    "lint": "eslint .  --ext .js",
+    "lint-fix": "eslint --fix .  --ext .js"
   },
   "author": "Olivia Lennerö",
   "license": "MIT",
@@ -17,5 +20,24 @@
     "express": "^4.19.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/js": "^9.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jest": "^28.2.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "globals": "^15.0.0",
+    "jest": "^29.7.0",
+    "superagent": "^9.0.1",
+    "supertest": "^6.3.4"
+  },
+  "overrides": {
+    "supertest": {
+      "superagent": "$superagent"
+    }
   }
 }

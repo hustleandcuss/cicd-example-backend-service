@@ -1,4 +1,4 @@
-const whitelist = process.env.CORS_ORIGINS;
+const whitelist = process.env.CORS_ORIGINS
 
 const cors = {
   origin: whitelist,
@@ -7,10 +7,10 @@ const cors = {
     'Accept',
     'Authorization',
     'Content-Type',
-    'If-None-Match',
+    'If-None-Match'
   ],
   exposedHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  credentials: true,
-};
+  credentials: true
+}
 
-module.exports = cors;
+module.exports = cors
