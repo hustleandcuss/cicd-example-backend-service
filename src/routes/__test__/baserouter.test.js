@@ -43,15 +43,12 @@ describe('BaseRouter', () => {
       .send()
 
     // ASSERT
-    expect(res.statusCode).toBe(501)
-
-    // TODO Enable when ready
-    //        expect(res.statusCode).toBe(200);
-    //        expect(res.type).toBe('application/json');
-    //        expect(res.body.length).toBe(3);
-    //        expect(res.body[0].id).toBe(1);
-    //        expect(res.body[0].name).toBe('Jane Doe');
-    //        expect(res.body[2].id).toBe(3);
-    //        expect(res.body[2].name).toBe('John Doe');
+    expect(res.statusCode).toBe(200)
+    expect(res.type).toBe('application/json')
+    expect(res.body.length).toBe(3)
+    expect(res.body[0].id).toBe(1)
+    expect(res.body[0].name).toBe('Jane Doe')
+    expect(res.body[2].id).toBe(3)
+    expect(res.body[2].name).toBe('John Doe')
   })
 })

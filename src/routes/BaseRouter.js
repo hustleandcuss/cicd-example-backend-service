@@ -26,21 +26,13 @@ router.get('/courses', (req, res) => {
 
 router.get('/students', (req, res) => {
   res
-    .status(501)
     .type('application/json')
+    .status(200)
     .json([
-      { name: 'THIS IS A BUG!' }
+      { id: 1, name: 'Jane Doe' },
+      { id: 2, name: 'Olivia Lennerö' },
+      { id: 3, name: 'John Doe' }
     ])
-
-//   TODO: Enable this when ready!
-//   res
-//       .type('application/json')
-//       .status(200)
-//       .json([
-//         {id:1, name:'Jane Doe'},
-//         {id:2, name:'Olivia Lennerö'},
-//         {id:3, name:'John Doe'}
-//       ]);
 })
 
 module.exports = router
