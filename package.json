@@ -1,6 +1,6 @@
 {
   "name": "backend-service",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Example backend service to demonstrate CI/CD flows.",
   "main": "src/index.js",
   "scripts": {
